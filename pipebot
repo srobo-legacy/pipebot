@@ -1,0 +1,51 @@
+#!/bin/env python
+import socket, os, select
+
+HOST="irc.zepler.net"
+PORT=6667
+NICK="pipebot2"
+IDENT="pipebot"
+REALNAME="pipebot"
+CHANNEL="#test_channel"
+
+s=socket.socket()
+s.connect((HOST, PORT))
+s.setblocking(0)
+
+s.send("NICK %s\r\n" % NICK)
+s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
+s.send("JOIN %s\r\n" % CHANNEL)
+s.send("PRIVMSG %s %s\r\n" % (CHANNEL, "I like bees") )
+
+if not os.path.exists("/tmp/pipebot"):
+    os.mkfifo("/tmp/pipebot")
+fifofd = os.open( "/tmp/pipebot",
+                  os.O_RDONLY | os.O_NONBLOCK )
+
+irc_buf = ""
+pipe_buf = ""
+
+while True:
+    ready = select.select( [fifofd,s], [], [s], 10 )
+    print "SELECT"
+
+    if s in ready[0]:
+        irc_buf += s.recv(100)
+
+        if "\n" in irc_buf:
+            lp = irc_buf.find("\n")
+            print lp
+
+            l = irc_buf[0:lp]
+            print l
+
+            irc_buf = irc_buf[lp+1:]
+
+    # if s in ready[1]:
+    #     print "s in ready[1]"
+
+    if s in ready[2]:
+        print "s in ready[2]"
+
+    if fifofd in ready[0]:
+        pass
