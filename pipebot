@@ -15,11 +15,10 @@ s.setblocking(0)
 s.send("NICK %s\r\n" % NICK)
 s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
 s.send("JOIN %s\r\n" % CHANNEL)
-s.send("PRIVMSG %s %s\r\n" % (CHANNEL, "I like bees") )
+s.send("PRIVMSG %s %s\r\n" % (CHANNEL, "Ready to plumb.") )
 
 if not os.path.exists("/tmp/pipebot"):
     os.mkfifo("/tmp/pipebot")
-
 
 irc_buf = ""
 pipe_buf = ""
@@ -37,7 +36,6 @@ fifofd = open_fifo()
 
 while True:
     ready = select.select( [fifofd,s], [], [fifofd] )
-    print "SELECT", ready
 
     if s in ready[0]:
         irc_buf += s.recv(100)
@@ -50,19 +48,18 @@ while True:
 
             print l
             if l[:4] == "PING":
-                print "ping"
                 resp = l.replace( "I", "O", 1 )
-                print "resp:", resp
                 s.send( resp )
-
-                privmsg(s, CHANNEL, "I just told the server to pong off.")
                 continue
 
     if fifofd in ready[0]:
-        print "fifo in ready[0]"
-        pipe_buf += os.read(fifofd, 100)
-        print len(pipe_buf)
-        print "\"%s\"" % pipe_buf
+        d = os.read(fifofd, 100)
+        if len(d) == 0:
+            os.close(fifofd)
+            fifofd = open_fifo()
+            continue
+
+        pipe_buf += d
 
         while "\n" in pipe_buf:
             nlpos = pipe_buf.find("\n")
@@ -70,10 +67,3 @@ while True:
             pipe_buf = pipe_buf[nlpos+1:]
 
             privmsg(s, CHANNEL, line)
-
-    if fifofd in ready[2]:
-        print "fifo in ready[2]"
-
-        os.close(fifofd)
-        fifofd = open_fifo()
-        
