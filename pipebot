@@ -6,7 +6,8 @@ PORT=6667
 NICK="pipebot"
 IDENT="pipebot"
 REALNAME="pipebot"
-CHANNEL="#test_channel"
+CHANNEL="#srobo-bots"
+PIPE_PATH="/tmp/hash-srobo"
 
 s=socket.socket()
 s.connect((HOST, PORT))
@@ -17,8 +18,8 @@ s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
 s.send("JOIN %s\r\n" % CHANNEL)
 s.send("PRIVMSG %s %s\r\n" % (CHANNEL, "Ready to plumb.") )
 
-if not os.path.exists("/tmp/pipebot"):
-    os.mkfifo("/tmp/pipebot")
+if not os.path.exists(PIPE_PATH):
+    os.mkfifo(PIPE_PATH)
 
 irc_buf = ""
 pipe_buf = ""
@@ -28,7 +29,7 @@ def privmsg(socket, target, msg):
     pass
 
 def open_fifo():
-    fifofd = os.open( "/tmp/pipebot",
+    fifofd = os.open( PIPE_PATH,
                       os.O_RDONLY | os.O_NONBLOCK )
     return fifofd
 
