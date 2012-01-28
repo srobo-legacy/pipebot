@@ -11,7 +11,11 @@ class Pipebot
 	 */
 	public static function say($message)
 	{
-		static $s_sayPath = escapeshellarg(dirname(__FILE__).'/say');
+		static $s_sayPath;
+		if ($s_sayPath == null)
+		{
+			$s_sayPath = escapeshellarg(dirname(__FILE__).'/say');
+		}
 		$s_message = escapeshellarg($message);
 		shell_exec("$s_sayPath $s_message");
 	}
