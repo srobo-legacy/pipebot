@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-import socket, os, select
+#!/bin/env python
+import socket, os, select, re
 
 HOST="irc.freenode.net"
 PORT=6667
@@ -35,6 +35,11 @@ def open_fifo():
 
 fifofd = open_fifo()
 
+if os.path.exists("pass"):
+    passfile = open("pass", "r")
+    privmsg( s, "srbot", "login pipebot %s" % (passfile.read().strip()) )
+    passfile.close()
+
 while True:
     ready = select.select( [fifofd,s], [], [fifofd] )
 
@@ -67,4 +72,5 @@ while True:
             line = pipe_buf[0:nlpos]
             pipe_buf = pipe_buf[nlpos+1:]
 
-            privmsg(s, CHANNEL, line)
+            if re.match( "^[^ ]+: ping$", line ) == None:
+                privmsg(s, CHANNEL, "srbot: say #srobo %s" % line)
