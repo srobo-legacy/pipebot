@@ -35,8 +35,9 @@ def open_fifo():
 
 fifofd = open_fifo()
 
-if os.path.exists("pass"):
-    passfile = open("pass", "r")
+pass_fn = os.path.join(os.path.abspath(os.path.dirname(__file__)), "pass")
+if os.path.exists(pass_fn):
+    passfile = open(pass_fn, "r")
     privmsg( s, "srbot", "login pipebot %s" % (passfile.read().strip()) )
     passfile.close()
 
