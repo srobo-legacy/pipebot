@@ -1,5 +1,5 @@
 #!/bin/env python
-import socket, os, select, re
+import socket, os, select, re, sys
 
 HOST="irc.freenode.net"
 PORT=6667
