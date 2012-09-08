@@ -16,7 +16,7 @@ s.setblocking(0)
 s.send("NICK %s\r\n" % NICK)
 s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
 s.send("JOIN %s\r\n" % CHANNEL)
-s.send("PRIVMSG %s %s\r\n" % (CHANNEL, "Ready to plumb.") )
+s.send("PRIVMSG %s :%s\r\n" % (CHANNEL, "Ready to plumb.") )
 
 if not os.path.exists(PIPE_PATH):
     os.mkfifo(PIPE_PATH)
@@ -25,7 +25,7 @@ irc_buf = ""
 pipe_buf = ""
 
 def privmsg(socket, target, msg):
-    socket.send( "PRIVMSG %s %s\r\n" % (target, msg) )
+    socket.send( "PRIVMSG %s :%s\r\n" % (target, msg) )
     pass
 
 def open_fifo():
