@@ -3,9 +3,9 @@ import socket, os, select, re, sys
 
 HOST="irc.freenode.net"
 PORT=6667
-NICK="pipebot"
-IDENT="pipebot"
-REALNAME="pipebot"
+NICK="srpipebot"
+IDENT="srpipebot"
+REALNAME="srpipebot"
 CHANNEL="#srobo-bots"
 PIPE_PATH="/tmp/hash-srobo"
 
