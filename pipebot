@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 import socket, os, select, re, sys
 
 HOST="irc.freenode.net"
