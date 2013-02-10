@@ -8,6 +8,7 @@ IDENT="srpipebot"
 REALNAME="srpipebot"
 CHANNEL="#srobo-bots"
 PIPE_PATH="/tmp/hash-srobo"
+TARGET_BOT="srbot"
 
 s=socket.socket()
 s.connect((HOST, PORT))
@@ -38,7 +39,7 @@ fifofd = open_fifo()
 pass_fn = os.path.join(os.path.abspath(os.path.dirname(__file__)), "pass")
 if os.path.exists(pass_fn):
     passfile = open(pass_fn, "r")
-    privmsg( s, "srbot", "login pipebot %s" % (passfile.read().strip()) )
+    privmsg( s, TARGET_BOT, "login pipebot %s" % (passfile.read().strip()) )
     passfile.close()
 
 while True:
@@ -82,4 +83,4 @@ while True:
             pipe_buf = pipe_buf[nlpos+1:]
 
             if re.match( "^[^ ]+: ping$", line ) == None:
-                privmsg(s, CHANNEL, "srbot: say #srobo %s" % line)
+                privmsg(s, CHANNEL, TARGET_BOT+": say #srobo %s" % line)
