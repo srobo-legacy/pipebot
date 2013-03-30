@@ -6,26 +6,20 @@ import select
 import socket
 import sys
 
-HOST="irc.freenode.net"
-PORT=6667
-NICK="srpipebot"
-IDENT="srpipebot"
-REALNAME="srpipebot"
-CHANNEL="#srobo-bots"
-PIPE_PATH="/tmp/hash-srobo"
-TARGET_BOT="srbot"
+# Defaults and local config
+import config
 
 s=socket.socket()
-s.connect((HOST, PORT))
+s.connect((config.HOST, config.PORT))
 s.setblocking(0)
 
-s.send("NICK %s\r\n" % NICK)
-s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
-s.send("JOIN %s\r\n" % CHANNEL)
-s.send("PRIVMSG %s :%s\r\n" % (CHANNEL, "Ready to plumb.") )
+s.send("NICK %s\r\n" % config.NICK)
+s.send("USER %s %s bla :%s\r\n" % (config.IDENT, config.HOST, config.REALNAME))
+s.send("JOIN %s\r\n" % config.CHANNEL)
+s.send("PRIVMSG %s :%s\r\n" % (config.CHANNEL, "Ready to plumb.") )
 
-if not os.path.exists(PIPE_PATH):
-    os.mkfifo(PIPE_PATH)
+if not os.path.exists(config.PIPE_PATH):
+    os.mkfifo(config.PIPE_PATH)
 
 irc_buf = ""
 pipe_buf = ""
@@ -35,7 +29,7 @@ def privmsg(socket, target, msg):
     pass
 
 def open_fifo():
-    fifofd = os.open( PIPE_PATH,
+    fifofd = os.open( config.PIPE_PATH,
                       os.O_RDONLY | os.O_NONBLOCK )
     return fifofd
 
@@ -44,7 +38,7 @@ fifofd = open_fifo()
 pass_fn = os.path.join(os.path.abspath(os.path.dirname(__file__)), "pass")
 if os.path.exists(pass_fn):
     passfile = open(pass_fn, "r")
-    privmsg( s, TARGET_BOT, "login pipebot %s" % (passfile.read().strip()) )
+    privmsg( s, config.TARGET_BOT, "login pipebot %s" % (passfile.read().strip()) )
     passfile.close()
 
 while True:
@@ -88,4 +82,4 @@ while True:
             pipe_buf = pipe_buf[nlpos+1:]
 
             if re.match( "^[^ ]+: ping$", line ) == None:
-                privmsg(s, CHANNEL, TARGET_BOT+": say #srobo %s" % line)
+                privmsg(s, config.CHANNEL, config.TARGET_BOT+": say #srobo %s" % line)
