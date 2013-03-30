@@ -52,12 +52,12 @@ while True:
 
     if s in ready[0]:
         recv_data = s.recv(100)
-	if len(recv_data) == 0:
-	    # Short read when select says data is available, means EOF.
-	    sys.stderr.write("Read EOF from irc server")
-	    # Don't reconnect automagically; init will restart us automatically,
-	    # with accounting.
-	    sys.exit(1)
+        if len(recv_data) == 0:
+            # Short read when select says data is available, means EOF.
+            sys.stderr.write("Read EOF from irc server")
+            # Don't reconnect automagically; init will restart us automatically,
+            # with accounting.
+            sys.exit(1)
 
         irc_buf += recv_data
 
