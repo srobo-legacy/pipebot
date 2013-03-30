@@ -7,6 +7,7 @@ REALNAME = "Student Robotics Pipebot"
 CHANNEL = "#srobo-bots"
 PIPE_PATH = "/tmp/hash-srobo"
 TARGET_BOT = "srbot"
+VERBOSE = True
 
 try:
     from localconfig import *

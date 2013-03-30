@@ -33,6 +33,10 @@ def open_fifo():
                       os.O_RDONLY | os.O_NONBLOCK )
     return fifofd
 
+def debug_print(*args):
+    if config.VERBOSE:
+        print ' '.join(args)
+
 fifofd = open_fifo()
 
 pass_fn = os.path.join(os.path.abspath(os.path.dirname(__file__)), "pass")
@@ -40,6 +44,8 @@ if os.path.exists(pass_fn):
     passfile = open(pass_fn, "r")
     privmsg( s, config.TARGET_BOT, "login pipebot %s" % (passfile.read().strip()) )
     passfile.close()
+
+channel_join = "^:.*!.* JOIN {channel}".format(channel = config.CHANNEL)
 
 while True:
     ready = select.select( [fifofd,s], [], [fifofd] )
@@ -61,11 +67,14 @@ while True:
             l = irc_buf[0:lp]
             irc_buf = irc_buf[lp+1:]
 
-            print l
+            debug_print(l)
             if l[:4] == "PING":
                 resp = l.replace( "I", "O", 1 )
                 s.send( resp )
                 continue
+
+            if re.match(channel_join, l) is not None:
+                print "Joined channel '%s'. Ready to plumb" % config.CHANNEL
 
     if fifofd in ready[0]:
         d = os.read(fifofd, 100)
