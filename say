@@ -1,21 +1,13 @@
 #!/usr/bin/env python
 
-import os
 import sys
-
-PIPE_PATH="/tmp/hash-srobo"
+from say import say
 
 if len(sys.argv) == 1:
     exit()
-
-def open_fifo():
-    fifofd = os.open( PIPE_PATH, os.O_WRONLY | os.O_NONBLOCK )
-    return fifofd
 
 message = ' '.join(sys.argv[1:]) + "\n"
 
 print message,
 
-fd = open_fifo()
-with os.fdopen(fd, 'a') as fifo:
-    fifo.write(message)
+say(message)
