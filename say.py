@@ -8,6 +8,8 @@ def open_fifo():
     return fifofd
 
 def say(message):
+    if not message.endswith('\n'):
+        message += '\n'
     fd = open_fifo()
     with os.fdopen(fd, 'a') as fifo:
         fifo.write(message)
