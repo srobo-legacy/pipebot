@@ -6,7 +6,7 @@ IDENT = "srpipebot-dev"
 REALNAME = "Student Robotics Pipebot"
 CHANNEL = "#srobo-bots"
 PIPE_PATH = "/tmp/hash-srobo"
-TARGET_BOT = "srbot"
+MESSAGE_PREFIX = "srbot: say #srobo "
 VERBOSE = True
 
 try:

@@ -91,4 +91,4 @@ while True:
             pipe_buf = pipe_buf[nlpos+1:]
 
             if re.match( "^[^ ]+: ping$", line ) == None:
-                privmsg(s, config.CHANNEL, config.TARGET_BOT+": say #srobo %s" % line)
+                privmsg(s, config.CHANNEL, config.MESSAGE_PREFIX + line)
