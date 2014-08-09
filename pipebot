@@ -96,5 +96,4 @@ while True:
             line = pipe_buf[0:nlpos].decode('utf-8')
             pipe_buf = pipe_buf[nlpos+1:]
 
-            if re.match( "^[^ ]+: ping$", line ) == None:
-                privmsg(config.CHANNEL, config.MESSAGE_PREFIX + line)
+            privmsg(config.CHANNEL, config.MESSAGE_PREFIX + line)
