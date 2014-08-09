@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 import os
 import re
 import select
@@ -35,7 +37,7 @@ def open_fifo():
 
 def debug_print(*args):
     if config.VERBOSE:
-        print ' '.join(args)
+        print(' '.join(args))
 
 fifofd = open_fifo()
 
@@ -54,7 +56,7 @@ while True:
         recv_data = s.recv(100)
         if len(recv_data) == 0:
             # Short read when select says data is available, means EOF.
-            print >> sys.stderr, "Read EOF from irc server"
+            print("Read EOF from irc server", file=sys.stderr)
             # Don't reconnect automagically; init will restart us automatically,
             # with accounting.
             sys.exit(1)
@@ -74,7 +76,7 @@ while True:
                 continue
 
             if re.match(channel_join, l) is not None:
-                print "Joined channel '%s'. Ready to plumb" % config.CHANNEL
+                print("Joined channel '{}'. Ready to plumb".format(config.CHANNEL))
 
     if fifofd in ready[0]:
         d = os.read(fifofd, 100)
