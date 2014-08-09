@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from __future__ import print_function
 
@@ -32,8 +32,8 @@ send('PRIVMSG {config.CHANNEL} :Ready to plumb.')
 if not os.path.exists(config.PIPE_PATH):
     os.mkfifo(config.PIPE_PATH)
 
-irc_buf = ""
-pipe_buf = ""
+irc_buf = b""
+pipe_buf = b""
 
 def privmsg(target, msg):
     send('PRIVMSG {target} :{message}'.format(target=target, message=msg))
@@ -67,10 +67,10 @@ while True:
 
         irc_buf += recv_data
 
-        while "\n" in irc_buf:
-            lp = irc_buf.find("\n")
+        while b"\n" in irc_buf:
+            lp = irc_buf.find(b"\n")
 
-            l = irc_buf[0:lp].rstrip('\r')
+            l = irc_buf[0:lp].rstrip(b'\r').decode('utf-8')
             irc_buf = irc_buf[lp+1:]
 
             debug_print('> {}'.format(l))
@@ -91,9 +91,9 @@ while True:
 
         pipe_buf += d
 
-        while "\n" in pipe_buf:
-            nlpos = pipe_buf.find("\n")
-            line = pipe_buf[0:nlpos]
+        while b"\n" in pipe_buf:
+            nlpos = pipe_buf.find(b"\n")
+            line = pipe_buf[0:nlpos].decode('utf-8')
             pipe_buf = pipe_buf[nlpos+1:]
 
             if re.match( "^[^ ]+: ping$", line ) == None:
