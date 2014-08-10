@@ -4,6 +4,7 @@ import os
 import re
 import select
 import socket
+import stat
 import sys
 
 # Defaults and local config
@@ -20,6 +21,9 @@ s.send("PRIVMSG %s :%s\r\n" % (config.CHANNEL, "Ready to plumb.") )
 
 if not os.path.exists(config.PIPE_PATH):
     os.mkfifo(config.PIPE_PATH)
+
+if not stat.S_ISFIFO(os.stat(config.PIPE_PATH).st_mode):
+    print >> sys.stderr, "Warning: PIPE_PATH '{0}' doesn't look like a FIFO".format(config.PIPE_PATH)
 
 irc_buf = ""
 pipe_buf = ""
