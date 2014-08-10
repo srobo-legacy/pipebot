@@ -12,6 +12,18 @@ import sys
 # Defaults and local config
 import config
 
+def privmsg(socket, target, msg):
+    socket.send( "PRIVMSG %s :%s\r\n" % (target, msg) )
+
+def open_fifo():
+    fifofd = os.open( config.PIPE_PATH,
+                      os.O_RDONLY | os.O_NONBLOCK )
+    return fifofd
+
+def debug_print(*args):
+    if config.VERBOSE:
+        print(' '.join(args))
+
 s=socket.socket()
 s.connect((config.HOST, config.PORT))
 s.setblocking(0)
@@ -29,19 +41,6 @@ if not stat.S_ISFIFO(os.stat(config.PIPE_PATH).st_mode):
 
 irc_buf = ""
 pipe_buf = ""
-
-def privmsg(socket, target, msg):
-    socket.send( "PRIVMSG %s :%s\r\n" % (target, msg) )
-    pass
-
-def open_fifo():
-    fifofd = os.open( config.PIPE_PATH,
-                      os.O_RDONLY | os.O_NONBLOCK )
-    return fifofd
-
-def debug_print(*args):
-    if config.VERBOSE:
-        print(' '.join(args))
 
 fifofd = open_fifo()
 
