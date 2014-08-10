@@ -81,6 +81,11 @@ while True:
             if re.match(channel_join, l) is not None:
                 print("Joined channel '{}'. Ready to plumb".format(config.CHANNEL))
 
+            # Log stuff we see
+            if config.LOG_PATH:
+                with open(config.LOG_PATH, 'a') as log_file:
+                    print(l, file=log_file)
+
     if fifofd in ready[0]:
         d = os.read(fifofd, 100)
         if len(d) == 0:
