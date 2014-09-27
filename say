@@ -8,6 +8,6 @@ if len(sys.argv) == 1:
 
 message = ' '.join(sys.argv[1:]) + "\n"
 
-print message,
+sys.stdout.write(message)
 
 say(message)

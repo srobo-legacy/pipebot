@@ -37,7 +37,8 @@ if not os.path.exists(config.PIPE_PATH):
     os.mkfifo(config.PIPE_PATH)
 
 if not stat.S_ISFIFO(os.stat(config.PIPE_PATH).st_mode):
-    print >> sys.stderr, "Warning: PIPE_PATH '{0}' doesn't look like a FIFO".format(config.PIPE_PATH)
+    not_fifo_warning = "Warning: PIPE_PATH '{0}' doesn't look like a FIFO".format(config.PIPE_PATH)
+    print(not_fifo_warning, file=sys.stderr)
 
 irc_buf = ""
 pipe_buf = ""
