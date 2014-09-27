@@ -10,6 +10,6 @@ MESSAGE_PREFIX = ""
 VERBOSE = True
 
 try:
-    from localconfig import *
+    from .localconfig import *
 except ImportError:
     pass
