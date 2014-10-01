@@ -1,1 +1,3 @@
-ldap:cn=mentors,ou=groups,o=sr		ldap/mentors
+# UUID                                  	Group Name
+#
+c7072880e9cf5b9b6c0d60591f57433d8d5b7a7b	pipebotmaintainer
