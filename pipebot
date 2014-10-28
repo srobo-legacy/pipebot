@@ -34,6 +34,8 @@ s.send("JOIN %s\r\n" % config.CHANNEL)
 s.send("PRIVMSG %s :%s\r\n" % (config.CHANNEL, "Ready to plumb.") )
 
 if not os.path.exists(config.PIPE_PATH):
+    # Create the pipe, ensure everyone can write to it
+    os.umask(0155)
     os.mkfifo(config.PIPE_PATH)
 
 if not stat.S_ISFIFO(os.stat(config.PIPE_PATH).st_mode):
