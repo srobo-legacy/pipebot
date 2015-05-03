@@ -18,3 +18,12 @@ In order to support messages from languages Pipebot from deficient languages,
 It is expected that this repo will be included as a submodule of any project
  that would like Pipebot integration, and the supplied wrappers used,
  rather than going direct to the FIFO.
+
+## Configuration
+
+Various aspects of the bot can be configured by introducing a `localconfig.py`
+ file next to the `config.py` file.
+
+**Note**: the default config is aimed at deployment so developers will probably
+ want to override many of the values, almost certainly including `PIPE_PATH`
+ and `CHANNEL`.

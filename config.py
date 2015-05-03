@@ -5,7 +5,7 @@ NICK = "srpipebot-dev"
 IDENT = "srpipebot-dev"
 REALNAME = "Student Robotics Pipebot"
 CHANNEL = "#srobo"
-PIPE_PATH = "/var/run/hash-srobo"
+PIPE_PATH = "/var/run/irc/hash-srobo"
 MESSAGE_PREFIX = ""
 VERBOSE = True
 
